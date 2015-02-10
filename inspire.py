@@ -1,5 +1,13 @@
 #!/usr/bin/env python
+'''
+inspire-req.py -- InspireHep riq-index calculation
+Copyright 2015 Sujeet Akula (sujeet@freeboson.org)
+Licensed under GNU GPLv2
 
+More info:
+ * http://github.com/freeboson/inspire-req/
+ * http://arXiv.org/abs/1209.2124
+'''
 import urllib2
 from urllib import urlencode
 from lxml import etree
