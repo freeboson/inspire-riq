@@ -39,8 +39,8 @@ def fetch_records(search):
     data = base_dat
     data['p'] = search
 
-    request = urllib2.Request(base_url, urlencode(data))
-    xml = urllib2.urlopen(request, headers).read()
+    request = urllib2.Request(base_url, urlencode(data), headers)
+    xml = urllib2.urlopen(request).read()
 
     feed = feedparser.parse(xml)
     for entry in feed.entries:
@@ -74,7 +74,7 @@ def get_num_authors(inspire_id):
     xml = urllib2.urlopen(urllib2.Request(url)).read()
 
     feed = feedparser.parse(xml)
-    return len(feed.feed.get('authors'))
+    return float(len(feed.feed.get('authors')))
 
 def get_pub_date(inspire_id):
 
@@ -114,6 +114,9 @@ def riq_analysis(author="S.Akula.1"):
                 cached_lengths[recid] = bib_lengths[idx]
         total_bib_lengths.append(bib_lengths)
 
+#    print("Saved {} lookups by caching.".format(sum(map(len,cites))
+#            -len(cached_lengths)))
+
     print("Computing tori...")
     r_inverse = np.array([np.sum(np.reciprocal(x)) for x in total_bib_lengths])
     tori = np.dot(r_inverse, np.reciprocal(num_authors))
@@ -122,7 +125,7 @@ def riq_analysis(author="S.Akula.1"):
     print("Computing riq...")
     earliest_pub_date = min(map(get_pub_date, papers))
     years_active = (datetime.fromtimestamp(mktime(gmtime())) -
-                         earliest_pub_date)/seconds_in_year
+                         earliest_pub_date).total_seconds()/seconds_in_year
     riq = np.sqrt(tori)/years_active
     print("{}'s riq-index = {}".format(author,np.round(1000*riq)))
 
