@@ -127,7 +127,7 @@ def riq_analysis(author="S.Akula.1"):
     years_active = (datetime.fromtimestamp(mktime(gmtime())) -
                          earliest_pub_date).total_seconds()/seconds_in_year
     riq = np.sqrt(tori)/years_active
-    print("{}'s riq-index = {}".format(author,np.round(1000*riq)))
+    print("{}'s riq-index = {}".format(author,int(np.round(1000*riq))))
 
 if __name__ == "__main__":
     riq_analysis()
